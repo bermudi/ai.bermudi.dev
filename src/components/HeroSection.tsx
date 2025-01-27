@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
+import { useId } from "react";
 
 const HeroSection = () => {
+  const filterId = useId();
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(102.3deg,rgba(147,39,143,1)_5.9%,rgba(234,172,232,1)_64%,rgba(246,219,245,1)_89%)] opacity-40" />
-      <div className="absolute inset-0 backdrop-blur-[2px]" />
+      <div className="bg absolute inset-0">
+        <div className="animate-onloadbgt"></div>
+        <div className="animate-onloadbgb"></div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -20,18 +26,20 @@ const HeroSection = () => {
           >
             The Future is Here
           </motion.span>
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-tight tracking-tighter"
+            className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-tight tracking-tighter"
           >
             Artificial
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-300">
+            <span className="glow-filter" data-text="Intelligence">
               Intelligence
             </span>
-          </motion.h1>
+            <br />
+            Vision
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,6 +58,32 @@ const HeroSection = () => {
           </motion.button>
         </div>
       </motion.div>
+
+      <svg className="filters" width="1440px" height="300px" viewBox="0 0 1440 300">
+        <defs>
+          <filter id={filterId} colorInterpolationFilters="sRGB" x="-50%" y="-200%" width="200%" height="500%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur4" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="19" result="blur19" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur9" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur30" />
+            <feColorMatrix in="blur4" result="color-0-blur" type="matrix" values="1 0 0 0 0 0 0.9803921568627451 0 0 0 0 0 0.9647058823529412 0 0 0 0 0 0.8 0" />
+            <feOffset in="color-0-blur" result="layer-0-offsetted" dx="0" dy="0" />
+            <feColorMatrix in="blur19" result="color-1-blur" type="matrix" values="0.8156862745098039 0 0 0 0 0 0.49411764705882355 0 0 0 0 0 0.2627450980392157 0 0 0 0 0 1 0" />
+            <feOffset in="color-1-blur" result="layer-1-offsetted" dx="0" dy="2" />
+            <feColorMatrix in="blur9" result="color-2-blur" type="matrix" values="1 0 0 0 0 0 0.6666666666666666 0 0 0 0 0 0.36470588235294116 0 0 0 0 0 0.65 0" />
+            <feOffset in="color-2-blur" result="layer-2-offsetted" dx="0" dy="2" />
+            <feColorMatrix in="blur30" result="color-3-blur" type="matrix" values="1 0 0 0 0 0 0.611764705882353 0 0 0 0 0 0.39215686274509803 0 0 0 0 0 1 0" />
+            <feOffset in="color-3-blur" result="layer-3-offsetted" dx="0" dy="2" />
+            <feMerge>
+              <feMergeNode in="layer-0-offsetted" />
+              <feMergeNode in="layer-1-offsetted" />
+              <feMergeNode in="layer-2-offsetted" />
+              <feMergeNode in="layer-3-offsetted" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
     </section>
   );
 };
