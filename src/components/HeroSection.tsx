@@ -22,7 +22,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-sm md:text-base font-medium px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
+            className="text-sm md:text-base font-medium px-6 py-2 rounded-full bg-white/10  border border-white/20"
           >
             The Future is Here
           </motion.span>
@@ -35,7 +35,7 @@ const HeroSection = () => {
             <span className="relative z-20 text-white">
               Artificial
               <br />
-              <span className="glow-filter relative z-20 text-white" data-text="Intelligence">
+              <span className="relative z-20 text-white" data-text="Intelligence">
                 Intelligence
               </span>
               <br />
