@@ -5,6 +5,7 @@ export interface ScrambleTextConfig {
     speed?: number;
     delay?: number;
     inView?: boolean;
+    rightToLeft?: boolean;
 }
 
 const defaultChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -19,23 +20,45 @@ export const scrambleText = (
     const delay = config.delay ?? 0;
     const chars = config.chars ?? defaultChars;
     const inView = config.inView ?? true;
+    const rightToLeft = config.rightToLeft ?? false;
 
     let frame: number;
     let startTime: number | null = null;
-    let currentText = element.textContent || '';
+    let isInDelayPhase = true;
+    let delayStartTime: number | null = null;
 
     const getRandomChar = () => chars[Math.floor(Math.random() * chars.length)];
+
+    const getScrambledText = () => {
+        let result = '';
+        for (let i = 0; i < finalText.length; i++) {
+            result += getRandomChar();
+        }
+        return result;
+    };
 
     const updateText = (progress: number) => {
         const targetLength = finalText.length;
         const currentLength = Math.ceil(targetLength * progress);
 
         let result = '';
-        for (let i = 0; i < targetLength; i++) {
-            if (i < currentLength) {
-                result += finalText[i];
-            } else {
-                result += getRandomChar();
+        if (rightToLeft) {
+            // For right-to-left, reveal from the end
+            for (let i = 0; i < targetLength; i++) {
+                if (i >= targetLength - currentLength) {
+                    result += finalText[i];
+                } else {
+                    result += getRandomChar();
+                }
+            }
+        } else {
+            // For left-to-right, reveal from the start
+            for (let i = 0; i < targetLength; i++) {
+                if (i < currentLength) {
+                    result += finalText[i];
+                } else {
+                    result += getRandomChar();
+                }
             }
         }
 
@@ -44,19 +67,28 @@ export const scrambleText = (
 
     const animate = (timestamp: number) => {
         if (!inView) {
-            element.textContent = currentText;
+            element.textContent = '';
             return;
         }
 
-        if (!startTime) startTime = timestamp;
-
-        const elapsed = timestamp - startTime - delay;
-
-        if (elapsed < 0) {
-            frame = requestAnimationFrame(animate);
-            return;
+        if (!delayStartTime) {
+            delayStartTime = timestamp;
+            element.textContent = getScrambledText();
         }
 
+        if (isInDelayPhase) {
+            const delayElapsed = timestamp - delayStartTime;
+            if (delayElapsed < delay) {
+                // During delay, keep showing scrambled text
+                element.textContent = getScrambledText();
+                frame = requestAnimationFrame(animate);
+                return;
+            }
+            isInDelayPhase = false;
+            startTime = timestamp;
+        }
+
+        const elapsed = timestamp - startTime;
         const progress = Math.min(elapsed / duration, 1);
 
         if (progress < 1) {
