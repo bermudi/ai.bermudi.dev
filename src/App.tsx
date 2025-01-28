@@ -8,14 +8,11 @@ function App() {
   return (
     <main className="bg-black">
       <HeroSection />
-      <div className="relative bg-transparent">
-        <SharedBackground />
-        <div className="relative z-10">
-          <FeaturesSection />
-          <FutureSection />
-          <ContactSection />
-        </div>
-      </div>
+      <SharedBackground>
+        <FeaturesSection />
+        <FutureSection />
+        <ContactSection />
+      </SharedBackground>
     </main>
   );
 }
