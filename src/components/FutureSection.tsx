@@ -1,22 +1,21 @@
 import { motion } from "framer-motion";
-import ParallaxBackground from "./ParallaxBackground";
 
 const FutureSection = () => {
   return (
-    <ParallaxBackground overlayClassName="bg-[linear-gradient(225deg,#FFE29F_0%,#FFA99F_48%,#FF719A_100%)] opacity-30">
-      <div className="container mx-auto px-4 h-screen flex items-center relative z-10">
+    <section className="min-h-screen">
+      <div className="container mx-auto px-4 h-screen flex items-center">
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto"
         >
           <div className="relative">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="inline-block px-4 py-1 mb-6 text-sm font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20"
             >
@@ -24,20 +23,20 @@ const FutureSection = () => {
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-5xl md:text-7xl font-bold mb-8 leading-tight"
+              className="text-5xl md:text-7xl font-bold mb-8 leading-tight text-white"
             >
               Shaping the Future with{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-300 to-red-300">
+              <span className="text-white">
                 Artificial Intelligence
               </span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
               className="text-xl text-gray-400 mb-12 leading-relaxed"
             >
@@ -46,15 +45,14 @@ const FutureSection = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative group px-8 py-4 overflow-hidden rounded-lg"
+              className="relative group px-8 py-4 overflow-hidden rounded-lg bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-colors"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 group-hover:opacity-90 transition-opacity" />
-              <span className="relative text-lg font-medium">Learn More</span>
+              <span className="text-lg font-medium text-white">Learn More</span>
             </motion.button>
           </div>
         </motion.div>
       </div>
-    </ParallaxBackground>
+    </section>
   );
 };
 

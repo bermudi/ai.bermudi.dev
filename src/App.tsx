@@ -1,24 +1,21 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import HeroSection from "./components/HeroSection";
+import FeaturesSection from "./components/FeaturesSection";
+import FutureSection from "./components/FutureSection";
+import ContactSection from "./components/ContactSection";
+import SharedBackground from "./components/SharedBackground";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <main className="bg-black text-white relative">
+      <HeroSection />
+      <div className="relative">
+        <SharedBackground />
+        <FeaturesSection />
+        <FutureSection />
+        <ContactSection />
+      </div>
+    </main>
+  );
+}
 
 export default App;
