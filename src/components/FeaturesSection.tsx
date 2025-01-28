@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useScrambleText } from "../utils/scrambleText";
+import { useRef } from "react";
 
 const features = [
   {
@@ -16,17 +18,31 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true });
+
+  const titleRef = useScrambleText<HTMLHeadingElement>("Core Technologies", {
+    duration: 1500,
+    delay: 300,
+    chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    inView: isInView,
+  });
+
   return (
     <section className="min-h-screen">
       <div className="container mx-auto px-4 py-20">
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="mb-20 text-center"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white">
+          <h2
+            ref={titleRef}
+            className="text-5xl md:text-6xl font-bold mb-6 text-white"
+          >
             Core Technologies
           </h2>
           <p className="text-xl text-gray-400">
