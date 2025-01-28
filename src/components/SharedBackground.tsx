@@ -8,7 +8,7 @@ const SharedBackground = () => {
         <motion.div
             style={{
                 y,
-                backgroundImage: "url('/backgrounds/background1.jpg')",
+                backgroundImage: "url('/backgrounds/background8.jpg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 position: "absolute",
