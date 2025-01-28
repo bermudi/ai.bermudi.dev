@@ -32,13 +32,15 @@ const HeroSection = () => {
             transition={{ delay: 0.4 }}
             className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-tight tracking-tighter"
           >
-            Artificial
-            <br />
-            <span className="glow-filter" data-text="Intelligence">
-              Intelligence
+            <span className="relative z-20 text-white">
+              Artificial
+              <br />
+              <span className="glow-filter relative z-20 text-white" data-text="Intelligence">
+                Intelligence
+              </span>
+              <br />
+              Vision
             </span>
-            <br />
-            Vision
           </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
