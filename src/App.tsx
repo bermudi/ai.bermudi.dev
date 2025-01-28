@@ -6,7 +6,7 @@ import SharedBackground from "./components/SharedBackground";
 
 function App() {
   return (
-    <main className="bg-black">
+    <main>
       <HeroSection />
       <SharedBackground>
         <FeaturesSection />

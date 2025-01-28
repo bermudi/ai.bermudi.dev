@@ -39,31 +39,33 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
     }
 
     return (
-        <div className="relative">
+        <div className="relative w-full">
             {/* Space background */}
             <div
-                className="absolute inset-0 w-full h-full"
+                className="fixed inset-0 w-full h-full"
                 style={{
                     backgroundImage: `url('/backgrounds/background.png')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     zIndex: -2,
+                    minHeight: '100vh'
                 }}
             />
             {/* Planet overlay */}
             <div
-                className="absolute inset-0 w-full h-full"
+                className="fixed inset-0 w-full h-full"
                 style={{
                     backgroundImage: `url('/backgrounds/planet.png')`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     zIndex: -1,
+                    minHeight: '100vh'
                 }}
             />
             {/* Content */}
-            <div className="relative z-10">
+            <div className="relative z-10 w-full">
                 {children}
             </div>
         </div>
