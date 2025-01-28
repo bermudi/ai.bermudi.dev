@@ -12,12 +12,13 @@ const SharedBackground = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 position: "fixed",
-                top: 0,
+                top: "100vh", // Start after the hero section
                 left: 0,
                 right: 0,
-                bottom: 0,
-                zIndex: -1,
+                height: "100vh",
+                zIndex: 0,
             }}
+            className="opacity-100"
         />
     );
 };

@@ -6,13 +6,15 @@ import SharedBackground from "./components/SharedBackground";
 
 function App() {
   return (
-    <main className="bg-black text-white relative">
+    <main className="bg-black">
       <HeroSection />
       <div className="relative">
         <SharedBackground />
-        <FeaturesSection />
-        <FutureSection />
-        <ContactSection />
+        <div className="text-white">
+          <FeaturesSection />
+          <FutureSection />
+          <ContactSection />
+        </div>
       </div>
     </main>
   );
