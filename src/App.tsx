@@ -8,9 +8,9 @@ function App() {
   return (
     <main className="bg-black">
       <HeroSection />
-      <div className="relative">
+      <div className="relative bg-transparent">
         <SharedBackground />
-        <div className="text-white">
+        <div className="relative z-10">
           <FeaturesSection />
           <FutureSection />
           <ContactSection />

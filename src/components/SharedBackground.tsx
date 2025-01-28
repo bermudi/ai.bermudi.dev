@@ -11,14 +11,14 @@ const SharedBackground = () => {
                 backgroundImage: "url('/backgrounds/background1.jpg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                position: "fixed",
-                top: "100vh", // Start after the hero section
+                position: "absolute",
+                top: 0,
                 left: 0,
                 right: 0,
-                height: "100vh",
-                zIndex: 0,
+                bottom: 0,
+                width: "100%",
+                minHeight: "300vh", // Cover all three sections
             }}
-            className="opacity-100"
         />
     );
 };
