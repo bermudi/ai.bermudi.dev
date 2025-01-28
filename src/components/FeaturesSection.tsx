@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ParallaxBackground from "./ParallaxBackground";
 
 const features = [
   {
@@ -17,12 +18,12 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,hsla(221,45%,73%,1)_0%,hsla(220,78%,29%,1)_100%)] opacity-20" />
-      <div className="container mx-auto px-4 relative z-10">
+    <ParallaxBackground overlayClassName="bg-[linear-gradient(90deg,hsla(221,45%,73%,1)_0%,hsla(220,78%,29%,1)_100%)] opacity-20">
+      <div className="container mx-auto px-4 py-20 relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="mb-20 text-center"
         >
@@ -39,6 +40,7 @@ const FeaturesSection = () => {
               key={feature.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               className="relative group"
             >
@@ -52,7 +54,7 @@ const FeaturesSection = () => {
           ))}
         </div>
       </div>
-    </section>
+    </ParallaxBackground>
   );
 };
 

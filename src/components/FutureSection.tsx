@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
+import ParallaxBackground from "./ParallaxBackground";
 
 const FutureSection = () => {
   return (
-    <section className="min-h-screen bg-black text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(225deg,#FFE29F_0%,#FFA99F_48%,#FF719A_100%)] opacity-30" />
-      <div className="absolute inset-0 backdrop-blur-sm" />
+    <ParallaxBackground overlayClassName="bg-[linear-gradient(225deg,#FFE29F_0%,#FFA99F_48%,#FF719A_100%)] opacity-30">
       <div className="container mx-auto px-4 h-screen flex items-center relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto"
         >
@@ -16,6 +16,7 @@ const FutureSection = () => {
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               className="inline-block px-4 py-1 mb-6 text-sm font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20"
             >
@@ -24,6 +25,7 @@ const FutureSection = () => {
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               className="text-5xl md:text-7xl font-bold mb-8 leading-tight"
             >
@@ -35,6 +37,7 @@ const FutureSection = () => {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: 0.6 }}
               className="text-xl text-gray-400 mb-12 leading-relaxed"
             >
@@ -51,7 +54,7 @@ const FutureSection = () => {
           </div>
         </motion.div>
       </div>
-    </section>
+    </ParallaxBackground>
   );
 };
 

@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
+import ParallaxBackground from "./ParallaxBackground";
 
 const ContactSection = () => {
   return (
-    <section className="min-h-screen bg-black text-white relative overflow-hidden flex items-center">
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,hsla(277,75%,84%,1)_0%,hsla(297,50%,51%,1)_100%)] opacity-30" />
-      <div className="container mx-auto px-4 relative z-10">
+    <ParallaxBackground overlayClassName="bg-[linear-gradient(90deg,hsla(277,75%,84%,1)_0%,hsla(297,50%,51%,1)_100%)] opacity-30">
+      <div className="container mx-auto px-4 min-h-screen flex items-center relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="max-w-3xl mx-auto"
         >
@@ -23,6 +24,7 @@ const ContactSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
             className="relative group rounded-2xl p-1"
           >
@@ -46,7 +48,7 @@ const ContactSection = () => {
           </motion.div>
         </motion.div>
       </div>
-    </section>
+    </ParallaxBackground>
   );
 };
 
