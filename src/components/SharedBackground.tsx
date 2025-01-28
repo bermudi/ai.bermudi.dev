@@ -15,6 +15,7 @@ interface SharedBackgroundProps {
 const SharedBackground = ({ children }: SharedBackgroundProps) => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const planetRef = useRef<HTMLDivElement>(null);
+    const bgRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -37,7 +38,8 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
     }, []);
 
     useEffect(() => {
-        if (planetRef.current && containerRef.current) {
+        if (planetRef.current && containerRef.current && bgRef.current) {
+            // Planet parallax
             gsap.to(planetRef.current, {
                 yPercent: -100,
                 ease: "none",
@@ -46,6 +48,18 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
                     start: "top top",
                     end: "bottom bottom",
                     scrub: 1,
+                }
+            });
+
+            // Background subtle parallax
+            gsap.to(bgRef.current, {
+                y: '-20%', // Use absolute value instead of percentage of element
+                ease: "none",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5,
                 }
             });
         }
@@ -59,14 +73,18 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
         <div ref={containerRef} className="relative w-full">
             {/* Space background */}
             <div
+                ref={bgRef}
                 className="fixed inset-0 w-full"
                 style={{
                     backgroundImage: `url('/backgrounds/background.png')`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
+                    backgroundSize: '100% auto',
+                    backgroundPosition: '50% 0%',
                     backgroundRepeat: 'repeat-y',
                     zIndex: -2,
-                    height: '100%'
+                    minHeight: '300vh', // Ensure background is tall enough
+                    transform: 'scale(1.1)', // Slightly larger to prevent edge visibility during parallax
+                    willChange: 'transform',
+                    transformOrigin: '50% 0%'
                 }}
             />
             {/* Planet overlay */}
@@ -79,7 +97,10 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
                     backgroundPosition: 'center bottom',
                     backgroundRepeat: 'no-repeat',
                     zIndex: -1,
-                    height: '100vh'
+                    height: '100vh',
+                    transform: 'translateZ(0)',
+                    willChange: 'transform',
+                    transformOrigin: 'bottom center'
                 }}
             />
             {/* Content */}
