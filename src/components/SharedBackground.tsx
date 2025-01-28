@@ -1,5 +1,5 @@
 // Import necessary hooks from React
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode, useRef } from 'react';
 // Import GSAP animation library
 import gsap from "gsap";
 // Import ScrollTrigger plugin for scroll-based animations
@@ -14,6 +14,8 @@ interface SharedBackgroundProps {
 
 const SharedBackground = ({ children }: SharedBackgroundProps) => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
+    const planetRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // Preload images
@@ -34,34 +36,50 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
             .catch(err => console.error('Error loading background images:', err));
     }, []);
 
+    useEffect(() => {
+        if (planetRef.current && containerRef.current) {
+            gsap.to(planetRef.current, {
+                yPercent: -100,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1,
+                }
+            });
+        }
+    }, [imagesLoaded]);
+
     if (!imagesLoaded) {
         return null; // Don't render anything until images are loaded
     }
 
     return (
-        <div className="relative w-full">
+        <div ref={containerRef} className="relative w-full">
             {/* Space background */}
             <div
-                className="fixed inset-0 w-full h-full"
+                className="fixed inset-0 w-full"
                 style={{
                     backgroundImage: `url('/backgrounds/background.png')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: 'repeat-y',
                     zIndex: -2,
-                    minHeight: '100vh'
+                    height: '100%'
                 }}
             />
             {/* Planet overlay */}
             <div
-                className="fixed inset-0 w-full h-full"
+                ref={planetRef}
+                className="fixed inset-x-0 bottom-0 w-full"
                 style={{
                     backgroundImage: `url('/backgrounds/planet.png')`,
                     backgroundSize: 'contain',
-                    backgroundPosition: 'center',
+                    backgroundPosition: 'center bottom',
                     backgroundRepeat: 'no-repeat',
                     zIndex: -1,
-                    minHeight: '100vh'
+                    height: '100vh'
                 }}
             />
             {/* Content */}
