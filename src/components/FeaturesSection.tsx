@@ -22,8 +22,8 @@ const FeaturesSection = () => {
   const isInView = useInView(containerRef, { once: true });
 
   const titleRef = useScrambleText<HTMLHeadingElement>("Core Technologies", {
-    duration: 1500,
-    delay: 300,
+    duration: 1100,
+    delay: 500,
     chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
     inView: isInView,
   });
@@ -43,7 +43,7 @@ const FeaturesSection = () => {
             ref={titleRef}
             className="text-5xl md:text-6xl font-bold mb-6 text-white"
           >
-            Core Technologies
+            {/* Text content managed by scrambleText */}
           </h2>
           <p className="text-xl text-gray-400">
             Exploring the fundamental technologies driving AI innovation
