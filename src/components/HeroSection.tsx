@@ -1,5 +1,9 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useScrambleText } from "../utils/scrambleText";
+import { useRef } from "react";
 import { useId } from "react";
+
+const defaultChars = 'abcdefghijklmnopqrstuvwxyz';
 
 const HeroSection = () => {
   const filterId = useId();
@@ -24,7 +28,7 @@ const HeroSection = () => {
             transition={{ delay: 0.2 }}
             className="text-sm md:text-base font-medium px-6 py-2 rounded-full bg-white/10  border border-white/20"
           >
-            The Future is Here
+            Tu futuro es aquí
           </motion.span>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -33,30 +37,43 @@ const HeroSection = () => {
             className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-tight tracking-tighter"
           >
             <span className="relative z-20 text-white">
-              Artificial
+              Creando el
               <br />
               <span className="relative z-20 text-white" data-text="Intelligence">
-                Intelligence
+                Mañana
               </span>
-              <br />
-              Vision
+              {/* <br />
+              Vision */}
             </span>
           </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-xl md:text-2xl text-gray-300 max-w-2xl text-center leading-relaxed"
-          >
-            Exploring the boundless possibilities of AI technology and its impact on our future
-          </motion.p>
+          <div className="space-y-4">
+            <p ref={useScrambleText<HTMLParagraphElement>(
+              "En un mundo donde la IA genera tanto entusiasmo como",
+              { duration: 1000, delay: 0, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+
+            <p ref={useScrambleText<HTMLParagraphElement>(
+              "inquietud, ofrecemos claridad y dirección. Nuestra misión",
+              { duration: 1000, delay: 1000, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+
+            <p ref={useScrambleText<HTMLParagraphElement>(
+              "es ayudar a empresas como la suya a implementar",
+              { duration: 1000, delay: 2000, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+
+            <p ref={useScrambleText<HTMLParagraphElement>(
+              "soluciones de IA de manera segura, práctica y rentable.",
+              { duration: 1000, delay: 3000, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+          </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="relative group px-8 py-4 overflow-hidden rounded-lg"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:opacity-90 transition-opacity" />
-            <span className="relative text-lg font-medium">Discover More</span>
+            <span className="relative text-lg font-medium">Descubre más</span>
           </motion.button>
         </div>
       </motion.div>

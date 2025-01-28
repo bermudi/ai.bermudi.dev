@@ -21,7 +21,7 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
     useEffect(() => {
         // Preload images
         const images = [
-            '/backgrounds/background.png',
+            '/backgrounds/background.webp',
             '/backgrounds/planet.png'
         ];
 
