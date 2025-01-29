@@ -10,7 +10,7 @@ const ImageGenerator = () => {
     const generateImage = async () => {
         try {
             setIsLoading(true);
-            const together = new Together({ apiKey: process.env.VITE_TOGETHER_API_KEY });
+            const together = new Together({ apiKey: import.meta.env.VITE_TOGETHER_API_KEY });
             const response = await together.images.create({
                 model: "black-forest-labs/FLUX.1-schnell-Free",
                 prompt: prompt,
