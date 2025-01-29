@@ -10,7 +10,7 @@ const ImageGenerator = () => {
     const generateImage = async () => {
         try {
             setIsLoading(true);
-            const together = new Together();
+            const together = new Together({ apiKey: process.env.VITE_TOGETHER_API_KEY });
             const response = await together.images.create({
                 model: "black-forest-labs/FLUX.1-schnell-Free",
                 prompt: prompt,
@@ -18,9 +18,9 @@ const ImageGenerator = () => {
                 height: 768,
                 steps: 1,
                 n: 1,
-                response_format: "b64_json"
+                response_format: "url"
             });
-            setGeneratedImage(response.data[0].b64_json);
+            setGeneratedImage(response.data[0].url);
         } catch (error) {
             console.error('Error generating image:', error);
         } finally {
@@ -54,7 +54,7 @@ const ImageGenerator = () => {
                 <div className="relative aspect-[4/3] bg-white/5 rounded-lg border border-white/20 overflow-hidden">
                     {generatedImage ? (
                         <img
-                            src={`data:image/jpeg;base64,${generatedImage}`}
+                            src={generatedImage}
                             alt="Generated"
                             className="w-full h-full object-cover"
                         />
