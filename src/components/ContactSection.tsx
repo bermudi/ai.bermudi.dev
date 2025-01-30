@@ -9,16 +9,16 @@ const ContactSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto"
+          className="max-w-5xl mx-auto"
         >
           <span className="inline-block px-4 py-1 mb-6 text-sm font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20">
-            Get Involved
+            Contacto
           </span>
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-            Be Part of the AI Revolution
+            Sé parte de la revolución de la IA
           </h2>
           <p className="text-xl text-gray-400 mb-12">
-            Join us in shaping the future of artificial intelligence
+            Ponte en contacto con nosotros para conocer más sobre y resolver todas tus dudas
           </p>
           <motion.div
             viewport={{ once: true }}
