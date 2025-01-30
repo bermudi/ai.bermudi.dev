@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Together from 'together-ai';
 
 const ImageGenerator = () => {
     const [prompt, setPrompt] = useState('');
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [showDisclaimer, setShowDisclaimer] = useState(false);
 
     const generateImage = async () => {
         try {
@@ -22,10 +23,16 @@ const ImageGenerator = () => {
             });
             setGeneratedImage(response.data[0].url);
         } catch (error) {
-            console.error('Error generating image:', error);
+            console.error('Error al generar la imagen:', error);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleDownload = () => {
+        if (!generatedImage) return;
+        // Open image in new tab as a workaround for CORS issues
+        window.open(generatedImage, '_blank');
     };
 
     return (
@@ -36,7 +43,7 @@ const ImageGenerator = () => {
                         <textarea
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
-                            placeholder="Enter your image prompt here..."
+                            placeholder="Ingresa tu descripción aquí..."
                             className="w-full h-32 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30"
                         />
                     </div>
@@ -47,23 +54,65 @@ const ImageGenerator = () => {
                         disabled={isLoading}
                         className="w-full py-3 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-lg border border-white/20 text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isLoading ? 'Generating...' : 'Create'}
+                        {isLoading ? 'Generando...' : 'Crear'}
                     </motion.button>
                 </div>
 
-                <div className="relative aspect-[4/3] bg-white/5 rounded-lg border border-white/20 overflow-hidden">
-                    {generatedImage ? (
-                        <img
-                            src={generatedImage}
-                            alt="Generated"
-                            className="w-full h-full object-cover"
-                        />
-                    ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                            <span>Generated image will appear here</span>
-                        </div>
+                <div className="relative">
+                    <div className="aspect-[4/3] bg-white/5 rounded-lg border border-white/20 overflow-hidden">
+                        {generatedImage ? (
+                            <img
+                                src={generatedImage}
+                                alt="Imagen Generada"
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
+                                <span>La imagen generada aparecerá aquí</span>
+                            </div>
+                        )}
+                    </div>
+                    {generatedImage && (
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={handleDownload}
+                            className="absolute bottom-4 right-4 py-2 px-4 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-lg border border-white/20 text-white text-sm font-medium transition-all"
+                        >
+                            Ver Imagen
+                        </motion.button>
                     )}
                 </div>
+            </div>
+
+            <div className="mt-8 text-center">
+                <motion.button
+                    onClick={() => setShowDisclaimer(!showDisclaimer)}
+                    className="text-sm text-gray-400 hover:text-gray-300 transition-colors underline underline-offset-4 cursor-pointer"
+                >
+                    {showDisclaimer ? 'Ocultar Aviso Legal' : 'Ver Aviso Legal'}
+                </motion.button>
+
+                <AnimatePresence>
+                    {showDisclaimer && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
+                        >
+                            <div className="mt-4 p-4 bg-white/5 backdrop-blur-md rounded-lg border border-white/10">
+                                <p className="text-sm text-gray-400 italic mb-2">
+                                    Las imágenes generadas por IA pueden variar en precisión y detalle. Los resultados están influenciados por la descripción proporcionada y las capacidades del modelo.
+                                </p>
+                                <p className="text-sm text-gray-400">
+                                    Esta demostración utiliza un modelo rápido y económico por razones prácticas. Esta calidad representa el mínimo posible - las posibilidades son infinitas con modelos más avanzados.
+                                </p>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

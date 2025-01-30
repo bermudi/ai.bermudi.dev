@@ -1,6 +1,6 @@
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
-import FutureSection from "./components/FutureSection";
+import FutureSection from "./components/CreateSection";
 import ContactSection from "./components/ContactSection";
 import SharedBackground from "./components/SharedBackground";
 
