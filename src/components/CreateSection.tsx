@@ -44,15 +44,15 @@ const FutureSection = () => {
               Transforma tus ideas en imágenes impresionantes con solo unas palabras
             </motion.p>
           </div>
-
-          <motion.div
+          <ImageGenerator />
+          {/* <motion.div
             initial={{ opacity: 0, y: 40 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
           >
             <ImageGenerator />
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </div>
     </section>

@@ -3,22 +3,22 @@ import { motion } from "framer-motion";
 const ContactSection = () => {
   return (
     <section className="min-h-screen">
-      <div className="container mx-auto px-4 min-h-screen flex items-center">
+      <div className="w-full px-4 min-h-screen flex items-center justify-center">
         <motion.div
           viewport={{ once: true }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-5xl mx-auto"
+          className="w-2/3 mx-auto"
         >
-          <span className="inline-block px-4 py-1 mb-6 text-sm font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20">
-            Contacto
+          <span className="inline-block px-4 py-1 mb-6 text-sm text-white font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20">
+            Contáctanos
           </span>
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-            Sé parte de la revolución de la IA
+            No te quedes atrás
           </h2>
           <p className="text-xl text-gray-400 mb-12">
-            Ponte en contacto con nosotros para conocer más sobre y resolver todas tus dudas
+            Ponte en contacto con nosotros para conocer más y resolver todas tus dudas
           </p>
           <motion.div
             viewport={{ once: true }}

@@ -1,12 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Together from 'together-ai';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ImageGenerator = () => {
     const [prompt, setPrompt] = useState('');
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            // Initial state - scaled down to a point
+            gsap.set(containerRef.current, {
+                scale: 0,
+                transformOrigin: 'center center',
+                opacity: 1
+            });
+
+            // Create timeline for coordinated animation
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top center+=100",
+                    once: true
+                }
+            });
+
+            // Opening animation
+            tl.to(containerRef.current, {
+                scale: 1,
+                duration: 1,
+                ease: "back.out(1.7)",
+            });
+        }
+
+        // Cleanup function
+        return () => {
+            if (containerRef.current) {
+                ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            }
+        };
+    }, []);
 
     const generateImage = async () => {
         try {
@@ -35,8 +74,12 @@ const ImageGenerator = () => {
         window.open(generatedImage, '_blank');
     };
 
+
     return (
-        <div className="w-full max-w-4xl mx-auto bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
+        <div
+            ref={containerRef}
+            className="w-full max-w-4xl mx-auto bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 relative overflow-hidden"
+        >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <div className="relative">
