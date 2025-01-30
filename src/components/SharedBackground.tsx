@@ -76,7 +76,7 @@ const SharedBackground = ({ children }: SharedBackgroundProps) => {
                 ref={bgRef}
                 className="fixed inset-0 w-full"
                 style={{
-                    backgroundImage: `url('/backgrounds/background.png')`,
+                    backgroundImage: `url('/backgrounds/bg.webp')`,
                     backgroundSize: '100% auto',
                     backgroundPosition: '50% 0%',
                     backgroundRepeat: 'repeat-y',
