@@ -44,15 +44,26 @@ const FeaturesSection = () => {
   });
 
   useEffect(() => {
-    iconRefs.current.forEach((iconRef) => {
+    iconRefs.current.forEach((iconRef, index) => {
       if (iconRef) {
-        gsap.to(iconRef, {
-          rotation: 360,
-          duration: 20,
-          repeat: -1,
-          ease: "none",
-          transformOrigin: "center center",
-        });
+        // Y-axis rotation for Shield and Wallet icons (index 1 and 3)
+        if (index === 1 || index === 3) {
+          gsap.to(iconRef, {
+            rotationY: 360,
+            duration: 20,
+            repeat: -1,
+            ease: "none",
+            transformOrigin: "center center",
+          });
+        } else {
+          gsap.to(iconRef, {
+            rotation: 360,
+            duration: 20,
+            repeat: -1,
+            ease: "none",
+            transformOrigin: "center center",
+          });
+        }
       }
     });
   }, []);
