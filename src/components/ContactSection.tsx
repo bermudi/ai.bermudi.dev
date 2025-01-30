@@ -9,7 +9,7 @@ const ContactSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-2/3 mx-auto"
+          className="w-[95%] md:w-2/3 mx-auto"
         >
           <span className="inline-block px-4 py-1 mb-6 text-sm text-white font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20">
             Contáctanos
@@ -24,7 +24,7 @@ const ContactSection = () => {
             viewport={{ once: true }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.6 }}
             className="relative group rounded-2xl p-1"
           >
             <div className="backdrop-blur-xl bg-black/30 p-8 rounded-2xl border border-white/10">
