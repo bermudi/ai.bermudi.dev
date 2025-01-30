@@ -10,9 +10,13 @@ const HeroSection = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
-      <div className="bg absolute inset-0">
-        <div className="animate-onloadbgt"></div>
-        <div className="animate-onloadbgb"></div>
+      <div className="absolute w-full h-full max-w-[44em] left-1/2 -translate-x-1/2">
+        <div className="absolute w-[min(100%,100vh)] aspect-square left-1/2 -translate-x-1/2 scale-[1.2] opacity-60 rounded-[100em]
+          [box-shadow:inset_0_0_4em_3em_rgba(238,200,175,0.2),inset_0_0_2em_0.4em_rgba(238,200,175,0.2),0_0_0.1em_0.1em_rgba(238,200,175,0.2),0_0_1em_0.4em_rgba(238,200,175,0.3)]
+          [translate:0_-70%] animate-onloadbgt"></div>
+        <div className="absolute w-[min(100%,100vh)] aspect-square left-1/2 -translate-x-1/2 scale-[1.2] opacity-60 rounded-[100em]
+          [box-shadow:inset_0_0_4em_3em_rgba(238,200,175,0.2),inset_0_0_2em_0.4em_rgba(238,200,175,0.2),0_0_0.1em_0.1em_rgba(238,200,175,0.2),0_0_1em_0.4em_rgba(238,200,175,0.3)]
+          [translate:0_70%] animate-onloadbgb"></div>
       </div>
 
       <motion.div
@@ -49,22 +53,22 @@ const HeroSection = () => {
           <div className="space-y-4">
             <p ref={useScrambleText<HTMLParagraphElement>(
               "En un mundo donde la IA genera tanto entusiasmo como",
-              { duration: 1000, delay: 0, chars: defaultChars }
+              { duration: 500, delay: 0, chars: defaultChars }
             )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
 
             <p ref={useScrambleText<HTMLParagraphElement>(
               "inquietud, ofrecemos claridad y dirección. Nuestra misión",
-              { duration: 1000, delay: 1000, chars: defaultChars }
+              { duration: 500, delay: 500, chars: defaultChars }
             )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
 
             <p ref={useScrambleText<HTMLParagraphElement>(
               "es ayudar a empresas como la suya a implementar",
-              { duration: 1000, delay: 2000, chars: defaultChars }
+              { duration: 500, delay: 1000, chars: defaultChars }
             )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
 
             <p ref={useScrambleText<HTMLParagraphElement>(
               "soluciones de IA de manera segura, práctica y rentable.",
-              { duration: 1000, delay: 3000, chars: defaultChars }
+              { duration: 500, delay: 1500, chars: defaultChars }
             )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
           </div>
           <motion.button

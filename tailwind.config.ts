@@ -79,6 +79,14 @@ export default {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },
+        onloadbgt: {
+          "0%": { translate: "0 -70%", opacity: "0.3" },
+          "100%": { translate: "0 -64%", opacity: "0.8" },
+        },
+        onloadbgb: {
+          "0%": { translate: "0 70%", opacity: "0.3" },
+          "100%": { translate: "0 64%", opacity: "0.8" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -86,6 +94,11 @@ export default {
         float: "float 6s ease-in-out infinite",
         "fade-up": "fade-up 0.5s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
+        onloadbgt: "onloadbgt 1s ease-in-out forwards",
+        onloadbgb: "onloadbgb 1s ease-in-out forwards",
+      },
+      scale: {
+        '120': '1.2',
       },
     },
   },
