@@ -90,7 +90,7 @@ const ImageGenerator = () => {
                     onClick={() => setShowDisclaimer(!showDisclaimer)}
                     className="text-sm text-gray-400 hover:text-gray-300 transition-colors underline underline-offset-4 cursor-pointer"
                 >
-                    {showDisclaimer ? 'Ocultar Aviso Legal' : 'Ver Aviso Legal'}
+                    {showDisclaimer ? 'Ocultar Advertencia' : 'Ver Advertencia'}
                 </motion.button>
 
                 <AnimatePresence>
@@ -103,8 +103,8 @@ const ImageGenerator = () => {
                             className="overflow-hidden"
                         >
                             <div className="mt-4 p-4 bg-white/5 backdrop-blur-md rounded-lg border border-white/10">
-                                <p className="text-sm text-gray-400 italic mb-2">
-                                    Las imágenes generadas por IA pueden variar en precisión y detalle. Los resultados están influenciados por la descripción proporcionada y las capacidades del modelo.
+                                <p className="text-sm text-gray-400 font-bold mb-2">
+                                    Las imágenes generadas por IA pueden variar en precisión y detalle.  Los resultados están influenciados por la descripción proporcionada y las capacidades del modelo.
                                 </p>
                                 <p className="text-sm text-gray-400">
                                     Esta demostración utiliza un modelo rápido y económico por razones prácticas. Esta calidad representa el mínimo posible - las posibilidades son infinitas con modelos más avanzados.

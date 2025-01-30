@@ -18,9 +18,9 @@ const FutureSection = () => {
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-block px-4 py-1 mb-6 text-sm font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20"
+              className="inline-block px-4 py-1 mb-6 text-sm text-white font-medium bg-white/10 rounded-full backdrop-blur-md border border-white/20"
             >
-              Tomorrow's World
+              Un nuevo mundo
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
@@ -29,9 +29,9 @@ const FutureSection = () => {
               transition={{ delay: 0.4 }}
               className="text-5xl md:text-7xl font-bold mb-8 leading-tight text-white"
             >
-              Create with{" "}
+              Creando con{" "}
               <span className="text-white">
-                AI
+                IA
               </span>
             </motion.h2>
             <motion.p
@@ -41,7 +41,7 @@ const FutureSection = () => {
               transition={{ delay: 0.6 }}
               className="text-xl text-gray-400 mb-12 leading-relaxed"
             >
-              Transform your ideas into stunning visuals with our AI-powered image generation
+              Transforma tus ideas en imágenes impresionantes con solo unas palabras
             </motion.p>
           </div>
 
