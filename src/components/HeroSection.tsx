@@ -51,25 +51,57 @@ const HeroSection = () => {
             </span>
           </motion.div>
           <div className="space-y-4">
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "En un mundo donde la IA genera tanto entusiasmo como",
-              { duration: 500, delay: 0, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+            <div className="relative inline-block">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "En un mundo donde la IA genera tanto entusiasmo como",
+                { duration: 500, delay: 0, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed absolute inset-0" />
+              <span
+                aria-hidden="true"
+                className="invisible text-xl md:text-2xl text-center leading-relaxed pointer-events-none"
+              >
+                En un mundo donde la IA genera tanto entusiasmo como
+              </span>
+            </div>
 
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "inquietud, ofrecemos claridad y dirección. Nuestra misión",
-              { duration: 500, delay: 500, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+            <div className="relative inline-block">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "inquietud, ofrecemos claridad y dirección. Nuestra misión",
+                { duration: 500, delay: 500, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed absolute inset-0" />
+              <span
+                aria-hidden="true"
+                className="invisible text-xl md:text-2xl text-center leading-relaxed pointer-events-none"
+              >
+                inquietud, ofrecemos claridad y dirección. Nuestra misión
+              </span>
+            </div>
 
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "es ayudar a empresas como la suya a implementar",
-              { duration: 500, delay: 1000, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+            <div className="relative inline-block">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "es ayudar a empresas como la suya a implementar",
+                { duration: 500, delay: 1000, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed absolute inset-0" />
+              <span
+                aria-hidden="true"
+                className="invisible text-xl md:text-2xl text-center leading-relaxed pointer-events-none"
+              >
+                es ayudar a empresas como la suya a implementar
+              </span>
+            </div>
 
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "soluciones de IA de manera segura, práctica y rentable.",
-              { duration: 500, delay: 1500, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+            <div className="relative inline-block">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "soluciones de IA de manera segura, práctica y rentable.",
+                { duration: 500, delay: 1500, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed absolute inset-0" />
+              <span
+                aria-hidden="true"
+                className="invisible text-xl md:text-2xl text-center leading-relaxed pointer-events-none"
+              >
+                soluciones de IA de manera segura, práctica y rentable.
+              </span>
+            </div>
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
