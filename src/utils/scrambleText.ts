@@ -42,6 +42,11 @@ export const scrambleText = (
                 result += matchCase(finalText[i], getRandomChar());
             }
         }
+        // Ensure length matches original
+        if (result.length !== finalText.length) {
+            console.warn('Scramble text length mismatch');
+            return finalText;
+        }
         return result;
     };
 

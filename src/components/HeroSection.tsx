@@ -43,15 +43,25 @@ const HeroSection = () => {
             Creando{'\n'}el&nbsp;Mañana
           </motion.h1>
           <div className="max-w-3xl space-y-4">
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.",
-              { duration: 750, delay: 0, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]" />
+            <div className="relative">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.",
+                { duration: 7500, delay: 0, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance] absolute top-0 left-0 w-full" />
+              <span aria-hidden="true" className="text-xl md:text-2xl text-transparent text-center leading-relaxed [text-wrap:balance]">
+                En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.
+              </span>
+            </div>
 
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.",
-              { duration: 750, delay: 750, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]" />
+            <div className="relative">
+              <p ref={useScrambleText<HTMLParagraphElement>(
+                "Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.",
+                { duration: 750, delay: 750, chars: defaultChars }
+              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance] absolute top-0 left-0 w-full" />
+              <span aria-hidden="true" className="text-xl md:text-2xl text-transparent text-center leading-relaxed [text-wrap:balance]">
+                Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.
+              </span>
+            </div>
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
