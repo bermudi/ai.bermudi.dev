@@ -29,10 +29,18 @@ export const scrambleText = (
 
     const getRandomChar = () => chars[Math.floor(Math.random() * chars.length)];
 
+    const matchCase = (source: string, target: string) => {
+        return source === source.toUpperCase() ? target.toUpperCase() : target.toLowerCase();
+    };
+
     const getScrambledText = () => {
         let result = '';
         for (let i = 0; i < finalText.length; i++) {
-            result += getRandomChar();
+            if (finalText[i] === ' ' || finalText[i] === '\n') {
+                result += finalText[i];
+            } else {
+                result += matchCase(finalText[i], getRandomChar());
+            }
         }
         return result;
     };
@@ -45,19 +53,19 @@ export const scrambleText = (
         if (rightToLeft) {
             // For right-to-left, reveal from the end
             for (let i = 0; i < targetLength; i++) {
-                if (i >= targetLength - currentLength) {
+                if (i >= targetLength - currentLength || finalText[i] === ' ' || finalText[i] === '\n') {
                     result += finalText[i];
                 } else {
-                    result += getRandomChar();
+                    result += matchCase(finalText[i], getRandomChar());
                 }
             }
         } else {
             // For left-to-right, reveal from the start
             for (let i = 0; i < targetLength; i++) {
-                if (i < currentLength) {
+                if (i < currentLength || finalText[i] === ' ' || finalText[i] === '\n') {
                     result += finalText[i];
                 } else {
-                    result += getRandomChar();
+                    result += matchCase(finalText[i], getRandomChar());
                 }
             }
         }
