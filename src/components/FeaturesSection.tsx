@@ -12,16 +12,16 @@ const features = [
     icon: Crosshair,
   },
   {
-    title: "Acceso Seguro",
-    description: "Capaces de acceder a sus datos empresariales de forma segura (RAG)",
-    longDescription: "Implementamos tecnología RAG (Retrieval-Augmented Generation) para garantizar un acceso seguro y eficiente a sus datos corporativos, manteniendo la confidencialidad.",
-    icon: Shield,
-  },
-  {
     title: "Adaptables",
     description: "Adaptables a las necesidades específicas de su empresa",
     longDescription: "Nuestros modelos se ajustan a sus requisitos específicos, permitiendo una personalización completa para alinearse con sus objetivos empresariales.",
     icon: Settings,
+  },
+  {
+    title: "Acceso Seguro",
+    description: "Capaces de acceder a sus datos empresariales de forma segura (RAG)",
+    longDescription: "Implementamos tecnología RAG (Retrieval-Augmented Generation) para garantizar un acceso seguro y eficiente a sus datos corporativos, manteniendo la confidencialidad.",
+    icon: Shield,
   },
   {
     title: "Accesibles",
