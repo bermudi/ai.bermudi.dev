@@ -30,46 +30,28 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-sm md:text-base font-medium px-6 py-2 rounded-full bg-white/10  border border-white/20"
+            className="text-sm md:text-base font-medium px-6 py-2 rounded-full bg-white/10 border border-white/20"
           >
             Tu futuro es aquí
           </motion.span>
-          <motion.div
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-tight tracking-tighter"
+            className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-[1.1] tracking-tighter whitespace-pre-line"
           >
-            <span className="relative z-20 text-white">
-              Creando el
-              <br />
-              <span className="relative z-20 text-white" data-text="Intelligence">
-                Mañana
-              </span>
-              {/* <br />
-              Vision */}
-            </span>
-          </motion.div>
-          <div className="space-y-4">
+            Creando{'\n'}el&nbsp;Mañana
+          </motion.h1>
+          <div className="max-w-3xl space-y-4">
             <p ref={useScrambleText<HTMLParagraphElement>(
-              "En un mundo donde la IA genera tanto entusiasmo como",
-              { duration: 500, delay: 0, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+              "En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.",
+              { duration: 750, delay: 0, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]" />
 
             <p ref={useScrambleText<HTMLParagraphElement>(
-              "inquietud, ofrecemos claridad y dirección. Nuestra misión",
-              { duration: 500, delay: 500, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
-
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "es ayudar a empresas como la suya a implementar",
-              { duration: 500, delay: 1000, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
-
-            <p ref={useScrambleText<HTMLParagraphElement>(
-              "soluciones de IA de manera segura, práctica y rentable.",
-              { duration: 500, delay: 1500, chars: defaultChars }
-            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed" />
+              "Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.",
+              { duration: 750, delay: 750, chars: defaultChars }
+            )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]" />
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
