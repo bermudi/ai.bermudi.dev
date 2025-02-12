@@ -1,10 +1,10 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useId } from "react";
 import { SplitText } from "../utils/splitText";
 import styled from "styled-components";
 
-const AnimatedSection = styled.section`
+const AnimatedSection = styled.section<{ $startSplitAnimation: boolean }>`
   .perspective-400 {
     perspective: 400px;
   }
@@ -13,7 +13,7 @@ const AnimatedSection = styled.section`
     opacity: 0;
     transform: translateY(80px) rotateX(180deg) scale(0);
     transform-origin: 0% 50% -50px;
-    animation: charAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: ${props => props.$startSplitAnimation ? 'charAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' : 'none'};
   }
   @keyframes charAnimation {
     to {
@@ -32,6 +32,7 @@ const HeroSection = () => {
   const text2Ref = useRef<HTMLParagraphElement>(null);
   const text1Split = useRef<any>(null);
   const text2Split = useRef<any>(null);
+  const [startSplitAnimation, setStartSplitAnimation] = useState(false);
 
   useEffect(() => {
     let totalIndex = 0;
@@ -74,7 +75,10 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <AnimatedSection className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
+    <AnimatedSection 
+      className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden"
+      $startSplitAnimation={startSplitAnimation}
+    >
       <div className="absolute w-full h-full max-w-[44em] left-1/2 -translate-x-1/2">
         <div className="absolute w-[min(100%,100vh)] aspect-square left-1/2 -translate-x-1/2 scale-[1.2] opacity-60 rounded-[100em]
           [box-shadow:inset_0_0_4em_3em_rgba(238,200,175,0.2),inset_0_0_2em_0.4em_rgba(238,200,175,0.2),0_0_0.1em_0.1em_rgba(238,200,175,0.2),0_0_1em_0.4em_rgba(238,200,175,0.3)]
@@ -102,7 +106,8 @@ const HeroSection = () => {
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            onAnimationComplete={() => setStartSplitAnimation(true)}
             className="header-text text-6xl md:text-8xl lg:text-9xl font-bold text-center leading-[1.1] tracking-tighter whitespace-pre-line"
           >
             Creando{'\n'}el&nbsp;Mañana

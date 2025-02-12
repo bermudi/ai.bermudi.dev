@@ -1,8 +1,29 @@
 import { motion, useInView } from "framer-motion";
 import { useScrambleText } from "../utils/scrambleText";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Crosshair, Shield, Settings, Wallet } from 'lucide-react';
 import gsap from 'gsap';
+import { SplitText } from "../utils/splitText";
+import styled from "styled-components";
+
+const AnimatedSection = styled.section<{ $startSplitAnimation: boolean }>`
+  .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(80px) rotateX(180deg) scale(0);
+    transform-origin: 0% 50% -50px;
+    animation: ${props => props.$startSplitAnimation ? 'charAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' : 'none'};
+  }
+  @keyframes charAnimation {
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateX(0) scale(1);
+    }
+  }
+  .char {
+    animation-delay: calc(0.01s * var(--char-index, 0));
+  }
+`;
 
 const features = [
   {
@@ -10,12 +31,6 @@ const features = [
     description: "Más precisos y confiables que nunca",
     longDescription: "Los modelos de IA actuales alcanzan niveles de precisión sin precedentes, reduciendo errores y proporcionando resultados más confiables en todas sus tareas.",
     icon: Crosshair,
-  },
-  {
-    title: "Adaptables",
-    description: "Adaptables a las necesidades específicas de su empresa",
-    longDescription: "Nuestros modelos se ajustan a sus requisitos específicos, permitiendo una personalización completa para alinearse con sus objetivos empresariales.",
-    icon: Settings,
   },
   {
     title: "Acceso Seguro",
@@ -29,25 +44,56 @@ const features = [
     longDescription: "Ofrecemos soluciones escalables y económicamente viables, permitiendo que empresas de todos los tamaños aprovechen el poder de la IA.",
     icon: Wallet,
   },
+  {
+    title: "Adaptables",
+    description: "Adaptables a las necesidades específicas de su empresa",
+    longDescription: "Nuestros modelos se ajustan a sus requisitos específicos, permitiendo una personalización completa para alinearse con sus objetivos empresariales.",
+    icon: Settings,
+  }
 ];
 
 const FeaturesSection = () => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true });
   const iconRefs = useRef<(SVGElement | null)[]>([]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleSplit = useRef<any>(null);
+  const [startSplitAnimation, setStartSplitAnimation] = useState(false);
+  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(-1);
 
-  const titleRef = useScrambleText<HTMLHeadingElement>("¿Por Qué Ahora?", {
-    duration: 1100,
-    delay: 500,
-    chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ¿?",
-    inView: isInView,
-  });
+  useEffect(() => {
+    if (isInView) {
+      // Start split text animation
+      setStartSplitAnimation(true);
+      // Start feature title animations after a delay
+      setTimeout(() => setCurrentFeatureIndex(0), 1500);
+    }
+  }, [isInView]);
+
+  useEffect(() => {
+    if (titleRef.current) {
+      titleSplit.current = new SplitText(titleRef.current, {
+        type: "words,chars",
+        tag: "span",
+        charsClass: "char",
+        wordsClass: "word"
+      });
+      // Add character indices for staggered animation
+      titleSplit.current.chars.forEach((char: HTMLElement, index: number) => {
+        char.style.setProperty('--char-index', index.toString());
+      });
+    }
+
+    return () => {
+      if (titleSplit.current) titleSplit.current.revert();
+    };
+  }, []);
 
   useEffect(() => {
     iconRefs.current.forEach((iconRef, index) => {
       if (iconRef) {
-        // Y-axis rotation for Shield and Wallet icons (index 1 and 3)
-        if (index === 1 || index === 3) {
+        // Y-axis rotation for Shield and Wallet icons (index 1 and 2)
+        if (index === 1 || index === 2) {
           gsap.to(iconRef, {
             rotationY: 360,
             duration: 20,
@@ -68,8 +114,18 @@ const FeaturesSection = () => {
     });
   }, []);
 
+  // Start next feature title animation
+  useEffect(() => {
+    if (currentFeatureIndex >= 0 && currentFeatureIndex < features.length - 1) {
+      const timer = setTimeout(() => {
+        setCurrentFeatureIndex(currentFeatureIndex + 1);
+      }, 400); // Delay between each feature title animation
+      return () => clearTimeout(timer);
+    }
+  }, [currentFeatureIndex]);
+
   return (
-    <section className="min-h-screen">
+    <AnimatedSection className="min-h-screen" $startSplitAnimation={startSplitAnimation}>
       <div className="container mx-auto px-4 py-20">
         <motion.div
           ref={containerRef}
@@ -81,9 +137,9 @@ const FeaturesSection = () => {
         >
           <h2
             ref={titleRef}
-            className="text-5xl md:text-6xl font-bold mb-6 text-white"
+            className="text-5xl md:text-6xl font-bold mb-6 text-white perspective-400"
           >
-            {/* Text content managed by scrambleText */}
+            ¿Por Qué Ahora?
           </h2>
           <p className="text-xl text-gray-400">
             La IA ha evolucionado significativamente en el último año. Los nuevos modelos son:
@@ -108,7 +164,20 @@ const FeaturesSection = () => {
                       className="w-10 h-10 text-white/80"
                     />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 text-white">{feature.title}</h3>
+                  <h3 className="text-2xl font-bold mb-4 text-white">
+                    <span ref={useScrambleText<HTMLSpanElement>(
+                      feature.title,
+                      {
+                        duration: 800,
+                        delay: 0,
+                        speed: 100,
+                        chars: "abcdefghijklmnopqrstuvwxyz",
+                        inView: currentFeatureIndex >= index
+                      }
+                    )}>
+                      {/* Text content managed by scrambleText */}
+                    </span>
+                  </h3>
                   <p className="text-gray-400 mb-4">{feature.description}</p>
                   <p className="text-gray-500 text-sm mt-auto">{feature.longDescription}</p>
                 </div>
@@ -117,7 +186,7 @@ const FeaturesSection = () => {
           })}
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 };
 
