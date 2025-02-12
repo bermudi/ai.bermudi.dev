@@ -8,6 +8,7 @@ export interface ScrambleTextConfig {
     delay?: number; // Delay before starting the reveal (ms)
     inView?: boolean;
     rightToLeft?: boolean;
+    onComplete?: () => void; // Add completion callback
 }
 
 const defaultChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -29,6 +30,7 @@ export const scrambleText = (
     let startTime: number | null = null;
     let delayStartTime: number | null = null;
     let lastRandomUpdateTime: number = 0;
+    let revealed = 0;
 
     // Initialize a cache of random letters for each non‑whitespace character.
     let cachedRandomChars = finalText.split("").map((c) =>
@@ -115,8 +117,15 @@ export const scrambleText = (
             frame = requestAnimationFrame(animate);
         } else {
             element.textContent = finalText;
+            config.onComplete?.();
         }
     };
+
+    // Add pre-initialization scramble
+    element.textContent = finalText
+        .split('')
+        .map(() => chars[Math.floor(Math.random() * chars.length)])
+        .join('');
 
     if (inView) {
         frame = requestAnimationFrame(animate);

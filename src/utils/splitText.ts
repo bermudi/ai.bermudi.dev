@@ -196,6 +196,7 @@ export class SplitText implements SplitTextResult {
         }
         // Clear the target element.
         this.target.innerHTML = "";
+        this.target.style.opacity = '1'; // Ensure container is visible
 
         // Split text into words (and further into characters if requested).
         if (splitWords) {
@@ -205,10 +206,15 @@ export class SplitText implements SplitTextResult {
                 if (this.options.wordsClass) {
                     wordEl.className = this.options.wordsClass;
                 }
+                wordEl.style.display = 'inline-block';
+                wordEl.style.opacity = '1';
+
                 if (splitChars) {
                     // Wrap each character in its own element.
                     for (const char of word) {
                         const charEl = this.createWrapper(char, this.options.charsClass);
+                        charEl.style.display = 'inline-block';
+                        charEl.style.opacity = '1';
                         wordEl.appendChild(charEl);
                         this.chars.push(charEl);
                     }
@@ -219,13 +225,18 @@ export class SplitText implements SplitTextResult {
                 this.words.push(wordEl);
                 // Preserve spacing between words.
                 if (index < wordsArray.length - 1) {
-                    this.target.appendChild(document.createTextNode(" "));
+                    const space = document.createElement('span');
+                    space.textContent = ' ';
+                    space.style.display = 'inline-block';
+                    this.target.appendChild(space);
                 }
             });
         } else if (splitChars) {
             // If the split is only by characters.
             for (const char of text) {
                 const charEl = this.createWrapper(char, this.options.charsClass);
+                charEl.style.display = 'inline-block';
+                charEl.style.opacity = '1';
                 this.target.appendChild(charEl);
                 this.chars.push(charEl);
             }

@@ -5,6 +5,8 @@ import { Crosshair, Shield, Settings, Wallet } from 'lucide-react';
 import gsap from 'gsap';
 import { SplitText } from "../utils/splitText";
 import styled from "styled-components";
+import { forwardRef, useImperativeHandle } from 'react';
+import { scrambleText } from '../utils/scrambleText';
 
 const AnimatedSection = styled.section<{ $startSplitAnimation: boolean }>`
   .char {
@@ -13,6 +15,7 @@ const AnimatedSection = styled.section<{ $startSplitAnimation: boolean }>`
     transform: translateY(80px) rotateX(180deg) scale(0);
     transform-origin: 0% 50% -50px;
     animation: ${props => props.$startSplitAnimation ? 'charAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' : 'none'};
+    will-change: transform, opacity;
   }
   @keyframes charAnimation {
     to {
@@ -21,7 +24,7 @@ const AnimatedSection = styled.section<{ $startSplitAnimation: boolean }>`
     }
   }
   .char {
-    animation-delay: calc(0.01s * var(--char-index, 0));
+    animation-delay: calc(0.02s * var(--char-index, 0));
   }
 `;
 
@@ -52,23 +55,82 @@ const features = [
   }
 ];
 
+interface ScrambleRef {
+  startScramble: () => void;
+}
+
+const ScrambleTextComponent = forwardRef<ScrambleRef, { text: string }>((props, ref) => {
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    startScramble: () => {
+      if (spanRef.current) {
+        // Cleanup previous animation if exists
+        if (cleanupRef.current) {
+          cleanupRef.current();
+        }
+        // Start new animation
+        cleanupRef.current = scrambleText(spanRef.current, {
+          text: props.text,
+          duration: 1500,
+          delay: 0,
+          speed: 50,
+          chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        });
+      }
+    }
+  }), [props.text]);
+
+  // Initialize with scrambled text
+  useEffect(() => {
+    if (spanRef.current) {
+      spanRef.current.textContent = props.text
+        .split('')
+        .map(char => char === ' ' ? ' ' : 'X')
+        .join('');
+    }
+    return () => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+      }
+    };
+  }, [props.text]);
+
+  return <span ref={spanRef} className="inline-block opacity-0 transition-opacity duration-300" style={{ opacity: 1 }}>{props.text}</span>;
+});
+
 const FeaturesSection = () => {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true });
+  const titleContainerRef = useRef(null);
+  const titleInView = useInView(titleContainerRef, { once: true, margin: "-100px" });
+  const cardsRef = useRef(null);
+  const cardsInView = useInView(cardsRef, { once: true, margin: "-100px" });
   const iconRefs = useRef<(SVGElement | null)[]>([]);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const titleSplit = useRef<any>(null);
+  const scrambleRefs = useRef<(ScrambleRef | null)[]>([]);
   const [startSplitAnimation, setStartSplitAnimation] = useState(false);
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(-1);
+  const [animationsReady, setAnimationsReady] = useState(false);
 
   useEffect(() => {
-    if (isInView) {
-      // Start split text animation
+    if (titleInView) {
       setStartSplitAnimation(true);
-      // Start feature title animations after a delay
-      setTimeout(() => setCurrentFeatureIndex(0), 1500);
     }
-  }, [isInView]);
+  }, [titleInView]);
+
+  useEffect(() => {
+    if (cardsInView) {
+      setTimeout(() => {
+        scrambleRefs.current.forEach((ref, index) => {
+          setTimeout(() => {
+            ref?.startScramble();
+          }, index * 200);
+        });
+      }, 400);
+    }
+  }, [cardsInView]);
 
   useEffect(() => {
     if (titleRef.current) {
@@ -128,32 +190,40 @@ const FeaturesSection = () => {
     <AnimatedSection className="min-h-screen" $startSplitAnimation={startSplitAnimation}>
       <div className="container mx-auto px-4 py-20">
         <motion.div
-          ref={containerRef}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          ref={titleContainerRef}
+          initial={{ opacity: 0, y: 20 }}
+          animate={titleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8 }}
           className="mb-20 text-center"
         >
           <h2
             ref={titleRef}
             className="text-5xl md:text-6xl font-bold mb-6 text-white perspective-400"
+            style={{ opacity: startSplitAnimation ? 1 : 0 }}
           >
             ¿Por Qué Ahora?
           </h2>
-          <p className="text-xl text-gray-400">
+          <motion.p 
+            className="text-xl text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             La IA ha evolucionado significativamente en el último año. Los nuevos modelos son:
-          </p>
+          </motion.p>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-6xl mx-auto">
+
+        <div 
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-6xl mx-auto"
+        >
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <motion.div
                 key={feature.title}
-                viewport={{ once: true }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={cardsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="relative group h-full"
               >
@@ -165,18 +235,10 @@ const FeaturesSection = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 text-white">
-                    <span ref={useScrambleText<HTMLSpanElement>(
-                      feature.title,
-                      {
-                        duration: 800,
-                        delay: 0,
-                        speed: 100,
-                        chars: "abcdefghijklmnopqrstuvwxyz",
-                        inView: currentFeatureIndex >= index
-                      }
-                    )}>
-                      {/* Text content managed by scrambleText */}
-                    </span>
+                    <ScrambleTextComponent 
+                      text={feature.title} 
+                      ref={(el: ScrambleRef | null) => scrambleRefs.current[index] = el} 
+                    />
                   </h3>
                   <p className="text-gray-400 mb-4">{feature.description}</p>
                   <p className="text-gray-500 text-sm mt-auto">{feature.longDescription}</p>
