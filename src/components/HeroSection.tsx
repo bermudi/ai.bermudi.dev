@@ -1,15 +1,80 @@
-import { motion, useInView } from "framer-motion";
-import { useScrambleText } from "../utils/scrambleText";
-import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useEffect } from "react";
 import { useId } from "react";
+import { SplitText } from "../utils/splitText";
+import styled from "styled-components";
 
-const defaultChars = 'abcdefghijklmnopqrstuvwxyz';
+const AnimatedSection = styled.section`
+  .perspective-400 {
+    perspective: 400px;
+  }
+  .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(80px) rotateX(180deg) scale(0);
+    transform-origin: 0% 50% -50px;
+    animation: charAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  @keyframes charAnimation {
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateX(0) scale(1);
+    }
+  }
+  .char {
+    animation-delay: calc(0.01s * var(--char-index, 0));
+  }
+`;
 
 const HeroSection = () => {
   const filterId = useId();
+  const text1Ref = useRef<HTMLParagraphElement>(null);
+  const text2Ref = useRef<HTMLParagraphElement>(null);
+  const text1Split = useRef<any>(null);
+  const text2Split = useRef<any>(null);
+
+  useEffect(() => {
+    let totalIndex = 0;
+    
+    if (text1Ref.current) {
+      text1Split.current = new SplitText(text1Ref.current, {
+        type: "words,chars",
+        tag: "span",
+        charsClass: "char",
+        wordsClass: "word"
+      });
+      // Add character indices for staggered animation
+      text1Split.current.chars.forEach((char: HTMLElement) => {
+        char.style.setProperty('--char-index', totalIndex.toString());
+        totalIndex++;
+      });
+    }
+
+    // Add a delay between paragraphs
+    totalIndex += 20; // Extra delay between paragraphs
+
+    if (text2Ref.current) {
+      text2Split.current = new SplitText(text2Ref.current, {
+        type: "words,chars",
+        tag: "span",
+        charsClass: "char",
+        wordsClass: "word"
+      });
+      // Continue the sequence from where first paragraph left off
+      text2Split.current.chars.forEach((char: HTMLElement) => {
+        char.style.setProperty('--char-index', totalIndex.toString());
+        totalIndex++;
+      });
+    }
+
+    return () => {
+      if (text1Split.current) text1Split.current.revert();
+      if (text2Split.current) text2Split.current.revert();
+    };
+  }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
+    <AnimatedSection className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden">
       <div className="absolute w-full h-full max-w-[44em] left-1/2 -translate-x-1/2">
         <div className="absolute w-[min(100%,100vh)] aspect-square left-1/2 -translate-x-1/2 scale-[1.2] opacity-60 rounded-[100em]
           [box-shadow:inset_0_0_4em_3em_rgba(238,200,175,0.2),inset_0_0_2em_0.4em_rgba(238,200,175,0.2),0_0_0.1em_0.1em_rgba(238,200,175,0.2),0_0_1em_0.4em_rgba(238,200,175,0.3)]
@@ -43,24 +108,16 @@ const HeroSection = () => {
             Creando{'\n'}el&nbsp;Mañana
           </motion.h1>
           <div className="max-w-3xl space-y-4">
-            <div className="relative">
-              <p ref={useScrambleText<HTMLParagraphElement>(
-                "En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.",
-                { duration: 1000, delay: 0, speed: 100, chars: defaultChars }
-              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance] absolute top-0 left-0 w-full" />
-              <span aria-hidden="true" className="text-xl md:text-2xl text-transparent text-center leading-relaxed [text-wrap:balance]">
+            <div className="relative perspective-400">
+              <p ref={text1Ref} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]">
                 En un mundo donde la Inteligencia Artificial genera tanto entusiasmo como inquietud, ofrecemos claridad y dirección.
-              </span>
+              </p>
             </div>
 
-            <div className="relative">
-              <p ref={useScrambleText<HTMLParagraphElement>(
-                "Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.",
-                { duration: 1000, delay: 1000, speed: 50, chars: defaultChars }
-              )} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance] absolute top-0 left-0 w-full" />
-              <span aria-hidden="true" className="text-xl md:text-2xl text-transparent text-center leading-relaxed [text-wrap:balance]">
+            <div className="relative perspective-400">
+              <p ref={text2Ref} className="text-xl md:text-2xl text-gray-300 text-center leading-relaxed [text-wrap:balance]">
                 Nuestra misión es ayudar a empresas como la suya a implementar soluciones de IA de manera segura, práctica y rentable.
-              </span>
+              </p>
             </div>
           </div>
           <motion.button
@@ -99,7 +156,7 @@ const HeroSection = () => {
           </filter>
         </defs>
       </svg>
-    </section>
+    </AnimatedSection>
   );
 };
 
