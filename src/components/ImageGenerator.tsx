@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Together from 'together-ai';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -11,26 +10,30 @@ const ImageGenerator = () => {
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         if (containerRef.current) {
-            gsap.fromTo(containerRef.current,
-              { opacity: 0, y: 50, scale: 0.95 },
-              { opacity: 1, y: 0, scale: 1,
-                scrollTrigger: {
-                  trigger: containerRef.current,
-                  start: 'top bottom-=10%',
-                  end: 'bottom bottom',
-                  scrub: 1,
-                  markers: false
+            gsap.fromTo(
+                containerRef.current,
+                { opacity: 0, y: 50, scale: 0.95 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: 'top bottom-=10%',
+                        end: 'bottom bottom',
+                        scrub: 1,
+                        markers: false,
+                    },
                 }
-              }
             );
         }
         return () => {
             if (containerRef.current) {
-                ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+                ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
             }
         };
     }, []);
@@ -38,19 +41,28 @@ const ImageGenerator = () => {
     const generateImage = async () => {
         try {
             setIsLoading(true);
-            const together = new Together({ apiKey: import.meta.env.VITE_TOGETHER_API_KEY });
-            const response = await together.images.create({
-                model: "black-forest-labs/FLUX.1-schnell-Free",
-                prompt: prompt,
-                width: 1024,
-                height: 768,
-                steps: 1,
-                n: 1,
-                response_format: "url"
+            const response = await fetch('http://localhost:3000/generate-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt }),
             });
-            setGeneratedImage(response.data[0].url);
+            const data = await response.json();
+            console.log('Response received');
+            
+            if (response.ok) {
+                if (data.b64_json) {
+                    // Convert base64 to data URL for image display
+                    const imageDataUrl = `data:image/jpeg;base64,${data.b64_json}`;
+                    setGeneratedImage(imageDataUrl);
+                } else if (data.url) {
+                    // Handle static URLs (like the nonono.gif)
+                    setGeneratedImage(data.url);
+                }
+            } else {
+                console.error('Error generating image:', data.error);
+            }
         } catch (error) {
-            console.error('Error al generar la imagen:', error);
+            console.error('Error generating image:', error);
         } finally {
             setIsLoading(false);
         }
@@ -58,7 +70,14 @@ const ImageGenerator = () => {
 
     const handleDownload = () => {
         if (!generatedImage) return;
-        window.open(generatedImage, '_blank');
+        
+        // For base64 images, create a temporary link to download
+        const link = document.createElement('a');
+        link.href = generatedImage;
+        link.download = `generated-image-${Date.now()}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
@@ -133,10 +152,14 @@ const ImageGenerator = () => {
                         >
                             <div className="mt-4 p-4 bg-white/5 backdrop-blur-md rounded-lg border border-white/10">
                                 <p className="text-sm text-gray-400 font-bold mb-2">
-                                    Las imágenes generadas por IA pueden variar en precisión y detalle.  Los resultados están influenciados por la descripción proporcionada y las capacidades del modelo.
+                                    Las imágenes generadas por IA pueden variar en precisión y detalle. Los
+                                    resultados están influenciados por la descripción proporcionada y las
+                                    capacidades del modelo.
                                 </p>
                                 <p className="text-sm text-gray-400">
-                                    Esta demostración utiliza un modelo rápido y económico por razones prácticas. Esta calidad representa el mínimo posible - las posibilidades son infinitas con modelos más avanzados.
+                                    Esta demostración utiliza un modelo rápido y económico por razones prácticas.
+                                    Esta calidad representa el mínimo posible - las posibilidades son infinitas con
+                                    modelos más avanzados.
                                 </p>
                             </div>
                         </motion.div>
