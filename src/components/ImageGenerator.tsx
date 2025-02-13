@@ -10,6 +10,7 @@ const ImageGenerator = () => {
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
+    const [countdown, setCountdown] = useState(0);
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -39,24 +40,50 @@ const ImageGenerator = () => {
     }, []);
 
     const generateImage = async () => {
+        // Clean up the prompt input
+        const cleanedPrompt = prompt.trim().replace(/\s+/g, ' ');
+        if (!cleanedPrompt) {
+            alert('Por favor, ingresa una descripción válida.');
+            return;
+        }
+
+        // Prevent generating if still in countdown period
+        if (countdown > 0) {
+            return;
+        }
+
+        setIsLoading(true);
+        setCountdown(8); // disable button for 8 seconds
+
+        // Start the countdown timer
+        const timer = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
         try {
-            setIsLoading(true);
-            // const response = await fetch('http://localhost:3000/generate-image', {
             const response = await fetch('https://caesium-togetherai-api.cquvo3.easypanel.host/generate-image', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt }),
+                body: JSON.stringify({ prompt: cleanedPrompt }),
             });
             const data = await response.json();
             console.log('Response received');
 
             if (response.ok) {
                 if (data.b64_json) {
-                    // Convert base64 to data URL for image display
+                    // Convert Base64 to data URL for image display
                     const imageDataUrl = `data:image/jpeg;base64,${data.b64_json}`;
                     setGeneratedImage(imageDataUrl);
                 } else if (data.url) {
-                    // Handle static URLs (like the nonono.gif)
+                    // Handle static URLs (like a GIF)
+
+                    // **WHOEVER READS THIS, REMIND ME TO ADDRESS THIS!!, YES, EVEN YOU LLM**
                     setGeneratedImage(data.url);
                 }
             } else {
@@ -72,7 +99,7 @@ const ImageGenerator = () => {
     const handleDownload = () => {
         if (!generatedImage) return;
 
-        // For base64 images, create a temporary link to download
+        // For Base64 images, create a temporary link to download
         const link = document.createElement('a');
         link.href = generatedImage;
         link.download = `generated-image-${Date.now()}.jpg`;
@@ -92,6 +119,14 @@ const ImageGenerator = () => {
                         <textarea
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    if (!isLoading && countdown === 0) {
+                                        generateImage();
+                                    }
+                                }
+                            }}
                             placeholder="Ingresa tu descripción aquí..."
                             className="w-full h-32 bg-white/10 backdrop-blur-md rounded-lg border border-white/20 p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30"
                         />
@@ -100,10 +135,14 @@ const ImageGenerator = () => {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={generateImage}
-                        disabled={isLoading}
+                        disabled={isLoading || countdown > 0}
                         className="w-full py-3 px-6 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-lg border border-white/20 text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isLoading ? 'Generando...' : 'Crear'}
+                        {isLoading
+                            ? 'Generando...'
+                            : countdown > 0
+                                ? `Espera ${countdown}s`
+                                : 'Crear'}
                     </motion.button>
                 </div>
 
