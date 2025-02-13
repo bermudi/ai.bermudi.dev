@@ -41,14 +41,15 @@ const ImageGenerator = () => {
     const generateImage = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch('http://localhost:3000/generate-image', {
+            // const response = await fetch('http://localhost:3000/generate-image', {
+            const response = await fetch('https://caesium-togetherai-api.cquvo3.easypanel.host/generate-image', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt }),
             });
             const data = await response.json();
             console.log('Response received');
-            
+
             if (response.ok) {
                 if (data.b64_json) {
                     // Convert base64 to data URL for image display
@@ -70,7 +71,7 @@ const ImageGenerator = () => {
 
     const handleDownload = () => {
         if (!generatedImage) return;
-        
+
         // For base64 images, create a temporary link to download
         const link = document.createElement('a');
         link.href = generatedImage;
