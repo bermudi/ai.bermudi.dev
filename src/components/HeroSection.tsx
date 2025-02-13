@@ -36,13 +36,14 @@ const HeroSection = () => {
 
   useEffect(() => {
     let totalIndex = 0;
-    
+
     if (text1Ref.current) {
       text1Split.current = new SplitText(text1Ref.current, {
         type: "words,chars",
         tag: "span",
         charsClass: "char",
-        wordsClass: "word"
+        wordsClass: "word",
+        reduceWhiteSpace: false
       });
       // Add character indices for staggered animation
       text1Split.current.chars.forEach((char: HTMLElement) => {
@@ -59,7 +60,8 @@ const HeroSection = () => {
         type: "words,chars",
         tag: "span",
         charsClass: "char",
-        wordsClass: "word"
+        wordsClass: "word",
+        reduceWhiteSpace: false
       });
       // Continue the sequence from where first paragraph left off
       text2Split.current.chars.forEach((char: HTMLElement) => {
@@ -75,7 +77,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <AnimatedSection 
+    <AnimatedSection
       className="min-h-screen flex items-center justify-center bg-black text-white relative overflow-hidden"
       $startSplitAnimation={startSplitAnimation}
     >

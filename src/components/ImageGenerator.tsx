@@ -15,31 +15,19 @@ const ImageGenerator = () => {
 
     useEffect(() => {
         if (containerRef.current) {
-            // Initial state - scaled down to a point
-            gsap.set(containerRef.current, {
-                scale: 0,
-                transformOrigin: 'center center',
-                opacity: 1
-            });
-
-            // Create timeline for coordinated animation
-            const tl = gsap.timeline({
+            gsap.fromTo(containerRef.current,
+              { opacity: 0, y: 50, scale: 0.95 },
+              { opacity: 1, y: 0, scale: 1,
                 scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top center+=100",
-                    once: true
+                  trigger: containerRef.current,
+                  start: 'top bottom-=10%',
+                  end: 'bottom bottom',
+                  scrub: 1,
+                  markers: false
                 }
-            });
-
-            // Opening animation
-            tl.to(containerRef.current, {
-                scale: 1,
-                duration: 1,
-                ease: "back.out(1.7)",
-            });
+              }
+            );
         }
-
-        // Cleanup function
         return () => {
             if (containerRef.current) {
                 ScrollTrigger.getAll().forEach(trigger => trigger.kill());
@@ -70,10 +58,8 @@ const ImageGenerator = () => {
 
     const handleDownload = () => {
         if (!generatedImage) return;
-        // Open image in new tab as a workaround for CORS issues
         window.open(generatedImage, '_blank');
     };
-
 
     return (
         <div
@@ -161,4 +147,4 @@ const ImageGenerator = () => {
     );
 };
 
-export default ImageGenerator; 
+export default ImageGenerator;

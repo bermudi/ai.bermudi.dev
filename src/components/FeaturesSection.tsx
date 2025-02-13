@@ -105,7 +105,6 @@ const FeaturesSection = () => {
   const titleContainerRef = useRef(null);
   const titleInView = useInView(titleContainerRef, { once: true, margin: "-100px" });
   const cardsRef = useRef(null);
-  const cardsInView = useInView(cardsRef, { once: true, margin: "-100px" });
   const iconRefs = useRef<(SVGElement | null)[]>([]);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const titleSplit = useRef<any>(null);
@@ -121,16 +120,44 @@ const FeaturesSection = () => {
   }, [titleInView]);
 
   useEffect(() => {
-    if (cardsInView) {
-      setTimeout(() => {
-        scrambleRefs.current.forEach((ref, index) => {
-          setTimeout(() => {
-            ref?.startScramble();
-          }, index * 200);
-        });
-      }, 400);
-    }
-  }, [cardsInView]);
+    const cards = gsap.utils.toArray('.feature-card') as HTMLElement[];
+    const scrambleFlags = new Array(cards.length).fill(false);
+
+    cards.forEach((card, index) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom-=10%',
+          end: 'bottom bottom', // Adjusted to complete exactly when card is fully in view
+          scrub: 1,
+          onEnter: () => {
+            // Only trigger scramble if it hasn't been triggered before
+            if (!scrambleFlags[index]) {
+              scrambleFlags[index] = true;
+              scrambleRefs.current[index]?.startScramble();
+            }
+          },
+          markers: false
+        }
+      });
+
+      // Animate card entry
+      tl.fromTo(card, {
+        opacity: 0,
+        y: 50,
+        scale: 0.95
+      }, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        ease: 'power2.out'
+      });
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   useEffect(() => {
     if (titleRef.current) {
@@ -203,7 +230,7 @@ const FeaturesSection = () => {
           >
             ¿Por Qué Ahora?
           </h2>
-          <motion.p 
+          <motion.p
             className="text-xl text-gray-400"
             initial={{ opacity: 0 }}
             animate={titleInView ? { opacity: 1 } : { opacity: 0 }}
@@ -213,7 +240,7 @@ const FeaturesSection = () => {
           </motion.p>
         </motion.div>
 
-        <div 
+        <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-6xl mx-auto"
         >
@@ -222,10 +249,7 @@ const FeaturesSection = () => {
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={cardsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="relative group h-full"
+                className="relative group h-full feature-card"
               >
                 <div className="relative backdrop-blur-sm bg-black/30 rounded-2xl p-8 border border-white/10 hover:border-white/20 transition-colors h-full flex flex-col">
                   <div className="relative w-20 h-20 rounded-xl bg-white/5 mb-6 flex items-center justify-center">
@@ -235,9 +259,9 @@ const FeaturesSection = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 text-white">
-                    <ScrambleTextComponent 
-                      text={feature.title} 
-                      ref={(el: ScrambleRef | null) => scrambleRefs.current[index] = el} 
+                    <ScrambleTextComponent
+                      text={feature.title}
+                      ref={(el: ScrambleRef | null) => scrambleRefs.current[index] = el}
                     />
                   </h3>
                   <p className="text-gray-400 mb-4">{feature.description}</p>

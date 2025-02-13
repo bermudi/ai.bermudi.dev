@@ -1,6 +1,6 @@
 import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
-import FutureSection from "./components/CreateSection";
+import CreateSection from "./components/CreateSection";
 import ContactSection from "./components/ContactSection";
 import SharedBackground from "./components/SharedBackground";
 
@@ -10,7 +10,7 @@ function App() {
       <HeroSection />
       <SharedBackground>
         <FeaturesSection />
-        <FutureSection />
+        <CreateSection />
         <ContactSection />
       </SharedBackground>
     </main>
